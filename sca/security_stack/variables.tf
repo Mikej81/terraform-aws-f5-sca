@@ -14,9 +14,9 @@ variable "atc_versions" {
   type        = map(string)
   default = {
     doVersion   = "1.12.0"
-    as3Version  = "3.13.2"
+    as3Version  = "3.20.0"
     tsVersion   = "1.11.0"
-    cfVersion   = "1.2.0"
+    cfVersion   = "1.3.0"
     fastVersion = "0.2.0"
   }
 }
@@ -31,3 +31,5 @@ variable vpcs {}
 variable subnets {}
 variable route_tables {}
 variable transit_gateways {}
+variable aws_cidr_ips {}
+variable subnet_cidrs {}
