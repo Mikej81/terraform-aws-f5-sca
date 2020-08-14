@@ -3,6 +3,11 @@ variable "aws_region" {
   type        = string
 }
 
+variable "aws_profile" {
+  description = "AWS Profile to use"
+  type        = string
+}
+
 variable "project" {
   description = "Project name for the SCA deployment"
   type        = string
