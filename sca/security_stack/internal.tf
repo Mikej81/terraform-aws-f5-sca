@@ -5,6 +5,7 @@ locals {
         "us-west-1a:management:0" = {
           "device_index"      = "0"
           "interface_type"    = "management"
+          "cloudfailover_tag" = "management"
           "private_ips_count" = 0
           "public_ip"         = true
           "subnet_id"         = var.subnets.value.az1.security.mgmt
@@ -15,6 +16,7 @@ locals {
         "us-west-1a:public:0" = {
           "device_index"      = "1"
           "interface_type"    = "private"
+          "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
           "subnet_id"         = var.subnets.value.az1.security.dmz_inside
@@ -25,6 +27,7 @@ locals {
         "us-west-1a:private:0" = {
           "device_index"      = "2"
           "interface_type"    = "private"
+          "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
           "subnet_id"         = var.subnets.value.az1.security.application_region
@@ -35,6 +38,7 @@ locals {
         "us-west-1a:private:1" = {
           "device_index"      = "3"
           "interface_type"    = "private"
+          "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
           "subnet_id"         = var.subnets.value.az1.security.internal
@@ -53,6 +57,7 @@ locals {
         "us-west-1b:management:0" = {
           "device_index"      = "0"
           "interface_type"    = "management"
+          "cloudfailover_tag" = "management"
           "private_ips_count" = 0
           "public_ip"         = true
           "subnet_id"         = var.subnets.value.az2.security.mgmt
@@ -63,6 +68,7 @@ locals {
         "us-west-1b:public:0" = {
           "device_index"      = "1"
           "interface_type"    = "private"
+          "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
           "subnet_id"         = var.subnets.value.az2.security.dmz_inside
@@ -73,6 +79,7 @@ locals {
         "us-west-1b:private:0" = {
           "device_index"      = "2"
           "interface_type"    = "private"
+          "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
           "subnet_id"         = var.subnets.value.az2.security.application_region
@@ -83,6 +90,7 @@ locals {
         "us-west-1b:private:1" = {
           "device_index"      = "3"
           "interface_type"    = "private"
+          "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
           "subnet_id"         = var.subnets.value.az2.security.internal
@@ -96,7 +104,7 @@ locals {
 }
 # Setup Onboarding scripts
 data "template_file" "internal_onboard_az1" {
-  template = "${file("${path.root}/templates/bigip_onboard.tmpl")}"
+  template = "${file("${path.root}/sca/security_stack/templates/bigip_onboard.tmpl")}"
 
   vars = {
     #uname        	      = var.adminAccountName
@@ -135,7 +143,7 @@ data "template_file" "internal_onboard_az1" {
   }
 }
 data "template_file" "internal_onboard_az2" {
-  template = "${file("${path.root}/templates/bigip_onboard.tmpl")}"
+  template = "${file("${path.root}/sca/security_stack/templates/bigip_onboard.tmpl")}"
 
   vars = {
     #uname        	      = var.adminAccountName

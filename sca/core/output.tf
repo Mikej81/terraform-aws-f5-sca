@@ -19,25 +19,24 @@ output iam_instance_profile_name {
 }
 
 output security_groups {
-  value = {
-    management = module.bigip_mgmt_sg.this_security_group_id
-    public     = module.bigip_sg.this_security_group_id
-    private    = module.bigip_sg.this_security_group_id
-  }
+  value = map(
+    management, module.bigip_mgmt_sg.this_security_group_id,
+    public,     module.bigip_sg.this_security_group_id,
+    private,    module.bigip_sg.this_security_group_id
+  )
 }
 
 output vpcs {
   description = "Secure Cloud Architecture VPCs"
-  value = {
-    security    = module.core.security-vpc
-    application = module.core.application-test
-    container   = module.core.container-test
-
-  }
+  value = map(
+    security    , module.core.security-vpc,
+    application , module.core.application-test,
+    container   , module.core.container-test
+  )
 }
 output subnets {
-  value = {
-    az1 = {
+  value = map(
+    az1, {
       security = {
         internet           = module.core.sec_subnet_internet_region-az-1
         egress_to_ch1      = module.core.sec_subnet_egress_to_ch1_region-az-1
@@ -66,8 +65,8 @@ output subnets {
         peering            = module.core.container_subnet_peering_region-az-1
         mgmt               = module.core.container_subnet_mgmt_region-az-1
       }
-    }
-    az2 = {
+    },
+    az2 , {
       security = {
         internet           = module.core.sec_subnet_internet_region-az-2
         egress_to_ch1      = module.core.sec_subnet_egress_to_ch1_region-az-2
@@ -97,22 +96,22 @@ output subnets {
         mgmt               = module.core.container_subnet_mgmt_region-az-2
       }
     }
-  }
+  )
 }
 
 output route_tables {
-  value = {
-    internet                  = module.core.internet_rt
-    sec_internal              = module.core.sec_Internal_rt
-    to_security_inspection_1  = module.core.to_security_insepction_1_rt
-    frm_security_inspection_1 = module.core.frm_security_insepction_1_rt
-    to_security_inspection_2  = module.core.to_security_insepction_2_rt
-    frm_security_inspection_2 = module.core.frm_security_insepction_2_rt
-    app_tgw                   = module.core.app_tgw_main_rt
-    container_tgw             = module.core.container_tgw_main_rt
-    sec_app_az1               = module.core.sec_application_az1_rt
-    sec_app_az2               = module.core.sec_application_az2_rt
-  }
+  value = map(
+    internet                  , module.core.internet_rt,
+    sec_internal              , module.core.sec_Internal_rt,
+    to_security_inspection_1  , module.core.to_security_insepction_1_rt,
+    frm_security_inspection_1 , module.core.frm_security_insepction_1_rt,
+    to_security_inspection_2  , module.core.to_security_insepction_2_rt,
+    frm_security_inspection_2 , module.core.frm_security_insepction_2_rt,
+    app_tgw                   , module.core.app_tgw_main_rt,
+    container_tgw             , module.core.container_tgw_main_rt,
+    sec_app_az1               , module.core.sec_application_az1_rt,
+    sec_app_az2               , module.core.sec_application_az2_rt
+  )
 }
 
 output CFE_route_tables {
@@ -123,10 +122,10 @@ output CFE_route_tables {
 }
 
 output transit_gateways {
-  value = {
-    security_to_app       = module.core.security-app-tgw
-    security-app-tgw-main = module.core.security-app-tgw-main-rt
-  }
+  value = map(
+    security_to_app,       module.core.security-app-tgw,
+    security-app-tgw-main, module.core.security-app-tgw-main-rt
+  )
 }
 
 output cidrs {
@@ -138,8 +137,8 @@ output cidrs {
 }
 
 output subnet_cidrs {
-  value = {
-    az1 = {
+  value = map(
+    az1, {
       security = {
         internet           = module.core.sec_subnet_internet_region-az-1-subnet
         egress_to_ch1      = module.core.sec_subnet_egress_to_ch1_region-az-1-subnet
@@ -153,14 +152,14 @@ output subnet_cidrs {
         internal           = module.core.sec_subnet_internal_region-az-1-subnet
         peering            = module.core.sec_subnet_peering_region-az-1-subnet
 
-      }
+      },
       application = {
         internet           = module.core.app_subnet_internet_region-az-1-subnet
         dmz_1              = module.core.app_subnet_dmz_1_region-az-1-subnet
         application_region = module.core.app_subnet_application_region-az-1-subnet
         peering            = module.core.app_subnet_peering_region-az-1-subnet
         mgmt               = module.core.app_subnet_mgmt_region-az-1-subnet
-      }
+      },
       container = {
         internet           = module.core.container_subnet_internet_region-az-1-subnet
         dmz_1              = module.core.container_subnet_dmz_1_region-az-1-subnet
@@ -168,8 +167,8 @@ output subnet_cidrs {
         peering            = module.core.container_subnet_peering_region-az-1-subnet
         mgmt               = module.core.container_subnet_mgmt_region-az-1-subnet
       }
-    }
-    az2 = {
+    },
+    az2, {
       security = {
         internet           = module.core.sec_subnet_internet_region-az-2-subnet
         egress_to_ch1      = module.core.sec_subnet_egress_to_ch1_region-az-2-subnet
@@ -183,14 +182,14 @@ output subnet_cidrs {
         internal           = module.core.sec_subnet_internal_region-az-2-subnet
         peering            = module.core.sec_subnet_peering_region-az-2-subnet
 
-      }
+      },
       application = {
         internet           = module.core.app_subnet_internet_region-az-2-subnet
         dmz_1              = module.core.app_subnet_dmz_1_region-az-2-subnet
         application_region = module.core.app_subnet_application_region-az-2-subnet
         peering            = module.core.app_subnet_peering_region-az-2-subnet
         mgmt               = module.core.app_subnet_mgmt_region-az-2-subnet
-      }
+      },
       container = {
         internet           = module.core.container_subnet_internet_region-az-2-subnet
         dmz_1              = module.core.container_subnet_dmz_1_region-az-2-subnet
@@ -199,12 +198,12 @@ output subnet_cidrs {
         mgmt               = module.core.container_subnet_mgmt_region-az-2-subnet
       }
     }
-  }
+  )
 }
 
 output aws_cidr_ips {
-  value = {
-    az1 = {
+  value = map(
+    az1, {
       security = {
         internet           = module.core.sec_subnet_internet_region-az-1-aws-ip
         egress_to_ch1      = module.core.sec_subnet_egress_to_ch1_region-az-1-aws-ip
@@ -233,8 +232,8 @@ output aws_cidr_ips {
         peering            = module.core.container_subnet_peering_region-az-1-aws-ip
         mgmt               = module.core.container_subnet_mgmt_region-az-1-aws-ip
       }
-    }
-    az2 = {
+    },
+    az2, {
       security = {
         internet           = module.core.sec_subnet_internet_region-az-2-aws-ip
         egress_to_ch1      = module.core.sec_subnet_egress_to_ch1_region-az-2-aws-ip
@@ -264,5 +263,5 @@ output aws_cidr_ips {
         mgmt               = module.core.container_subnet_mgmt_region-az-2-aws-ip
       }
     }
-  }
+  )
 }
