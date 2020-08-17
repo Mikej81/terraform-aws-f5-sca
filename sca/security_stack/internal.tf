@@ -8,9 +8,9 @@ locals {
           "cloudfailover_tag" = "management"
           "private_ips_count" = 0
           "public_ip"         = true
-          "subnet_id"         = var.subnets.value.az1.security.mgmt
+          "subnet_id"         = var.subnets.az1.security.mgmt
           "subnet_security_group_ids" = [
-            var.security_groups.value.management
+            var.security_groups.management
           ]
         }
         "us-west-1a:public:0" = {
@@ -19,9 +19,9 @@ locals {
           "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
-          "subnet_id"         = var.subnets.value.az1.security.dmz_inside
+          "subnet_id"         = var.subnets.az1.security.dmz_inside
           "subnet_security_group_ids" = [
-            var.security_groups.value.public
+            var.security_groups.public
           ]
         }
         "us-west-1a:private:0" = {
@@ -30,9 +30,9 @@ locals {
           "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
-          "subnet_id"         = var.subnets.value.az1.security.application_region
+          "subnet_id"         = var.subnets.az1.security.application_region
           "subnet_security_group_ids" = [
-            var.security_groups.value.private
+            var.security_groups.private
           ]
         }
         "us-west-1a:private:1" = {
@@ -41,9 +41,9 @@ locals {
           "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
-          "subnet_id"         = var.subnets.value.az1.security.internal
+          "subnet_id"         = var.subnets.az1.security.internal
           "subnet_security_group_ids" = [
-            var.security_groups.value.private
+            var.security_groups.private
           ]
         }
       }
@@ -60,9 +60,9 @@ locals {
           "cloudfailover_tag" = "management"
           "private_ips_count" = 0
           "public_ip"         = true
-          "subnet_id"         = var.subnets.value.az2.security.mgmt
+          "subnet_id"         = var.subnets.az2.security.mgmt
           "subnet_security_group_ids" = [
-            var.security_groups.value.management
+            var.security_groups.management
           ]
         }
         "us-west-1b:public:0" = {
@@ -71,9 +71,9 @@ locals {
           "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
-          "subnet_id"         = var.subnets.value.az2.security.dmz_inside
+          "subnet_id"         = var.subnets.az2.security.dmz_inside
           "subnet_security_group_ids" = [
-            var.security_groups.value.public
+            var.security_groups.public
           ]
         }
         "us-west-1b:private:0" = {
@@ -82,9 +82,9 @@ locals {
           "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
-          "subnet_id"         = var.subnets.value.az2.security.application_region
+          "subnet_id"         = var.subnets.az2.security.application_region
           "subnet_security_group_ids" = [
-            var.security_groups.value.private
+            var.security_groups.private
           ]
         }
         "us-west-1b:private:1" = {
@@ -93,9 +93,9 @@ locals {
           "cloudfailover_tag" = "private"
           "private_ips_count" = 0
           "public_ip"         = false
-          "subnet_id"         = var.subnets.value.az2.security.internal
+          "subnet_id"         = var.subnets.az2.security.internal
           "subnet_security_group_ids" = [
-            var.security_groups.value.private
+            var.security_groups.private
           ]
         }
       }
@@ -117,29 +117,29 @@ data "template_file" "internal_onboard_az1" {
     cfVersion   = var.atc_versions.cfVersion
     fastVersion = var.atc_versions.fastVersion
     onboard_log = "/var/log/startup-script.log"
-    secret_id   = var.secrets_manager_name.value
+    secret_id   = var.secrets_manager_name
     # gateways
-    applicationGateway =  var.aws_cidr_ips.value.az1.security.application_region
-    #dmzInsideGateway   =  var.aws_cidr_ips.value.az1.security.dmz_inside
-    dmzOutsideGateway  =  var.aws_cidr_ips.value.az1.security.internal
-    #egressCh1Gateway   =  var.aws_cidr_ips.value.az1.security.egress_to_ch1
-    #egressCh2Gateway   =  var.aws_cidr_ips.value.az1.security.egress_to_ch2
-    #internalGateway    =  var.aws_cidr_ips.value.az1.security.internal
-    externalGateway    =  var.aws_cidr_ips.value.az1.security.application_region
-    #mgmtGateway        =  var.aws_cidr_ips.value.az1.security.mgmt
-    #peeringGateway     =  var.aws_cidr_ips.value.az1.security.peering
+    applicationGateway =  var.aws_cidr_ips.az1.security.application_region
+    #dmzInsideGateway   =  var.aws_cidr_ips.az1.security.dmz_inside
+    dmzOutsideGateway  =  var.aws_cidr_ips.az1.security.internal
+    #egressCh1Gateway   =  var.aws_cidr_ips.az1.security.egress_to_ch1
+    #egressCh2Gateway   =  var.aws_cidr_ips.az1.security.egress_to_ch2
+    #internalGateway    =  var.aws_cidr_ips.az1.security.internal
+    externalGateway    =  var.aws_cidr_ips.az1.security.application_region
+    #mgmtGateway        =  var.aws_cidr_ips.az1.security.mgmt
+    #peeringGateway     =  var.aws_cidr_ips.az1.security.peering
     # networks
-    applicationNetwork =  var.subnet_cidrs.value.az1.security.application_region
-    #dmzInsideNetwork   =  var.subnet_cidrs.value.az1.security.dmz_inside
-    dmzOutsideNetwork  =  var.subnet_cidrs.value.az1.security.internal
-    #egressCh1Network   =  var.subnet_cidrs.value.az1.security.egress_to_ch1
-    #egressCh2Network   =  var.subnet_cidrs.value.az1.security.egress_to_ch2
-    #internalNetwork    =  var.subnet_cidrs.value.az1.security.internal
-    externalNetwork    =  var.subnet_cidrs.value.az1.security.dmz_inside
-    #mgmtNetwork        =  var.subnet_cidrs.value.az1.security.mgmt
-    #peeringNetwork     =  var.subnet_cidrs.value.az1.security.peering
+    applicationNetwork =  var.subnet_cidrs.az1.security.application_region
+    #dmzInsideNetwork   =  var.subnet_cidrs.az1.security.dmz_inside
+    dmzOutsideNetwork  =  var.subnet_cidrs.az1.security.internal
+    #egressCh1Network   =  var.subnet_cidrs.az1.security.egress_to_ch1
+    #egressCh2Network   =  var.subnet_cidrs.az1.security.egress_to_ch2
+    #internalNetwork    =  var.subnet_cidrs.az1.security.internal
+    externalNetwork    =  var.subnet_cidrs.az1.security.dmz_inside
+    #mgmtNetwork        =  var.subnet_cidrs.az1.security.mgmt
+    #peeringNetwork     =  var.subnet_cidrs.az1.security.peering
     # sync must be other az
-    syncNetwork        = var.subnet_cidrs.value.az2.security.application_region
+    syncNetwork        = var.subnet_cidrs.az2.security.application_region
   }
 }
 data "template_file" "internal_onboard_az2" {
@@ -156,29 +156,29 @@ data "template_file" "internal_onboard_az2" {
     cfVersion   = var.atc_versions.cfVersion
     fastVersion = var.atc_versions.fastVersion
     onboard_log = "/var/log/startup-script.log"
-    secret_id   = var.secrets_manager_name.value
+    secret_id   = var.secrets_manager_name
     # gateways
-    applicationGateway =  var.aws_cidr_ips.value.az2.security.application_region
-    #dmzInsideGateway   =  var.aws_cidr_ips.value.az2.security.dmz_inside
-    dmzOutsideGateway  =  var.aws_cidr_ips.value.az2.security.internal
-    #egressCh1Gateway   =  var.aws_cidr_ips.value.az2.security.egress_to_ch1
-    #egressCh2Gateway   =  var.aws_cidr_ips.value.az2.security.egress_to_ch2
-    #internalGateway    =  var.aws_cidr_ips.value.az2.security.internal
-    externalGateway    =  var.aws_cidr_ips.value.az2.security.application_region
-    #mgmtGateway        =  var.aws_cidr_ips.value.az2.security.mgmt
-    #peeringGateway     =  var.aws_cidr_ips.value.az2.security.peering
+    applicationGateway =  var.aws_cidr_ips.az2.security.application_region
+    #dmzInsideGateway   =  var.aws_cidr_ips.az2.security.dmz_inside
+    dmzOutsideGateway  =  var.aws_cidr_ips.az2.security.internal
+    #egressCh1Gateway   =  var.aws_cidr_ips.az2.security.egress_to_ch1
+    #egressCh2Gateway   =  var.aws_cidr_ips.az2.security.egress_to_ch2
+    #internalGateway    =  var.aws_cidr_ips.az2.security.internal
+    externalGateway    =  var.aws_cidr_ips.az2.security.application_region
+    #mgmtGateway        =  var.aws_cidr_ips.az2.security.mgmt
+    #peeringGateway     =  var.aws_cidr_ips.az2.security.peering
     # networks
-    applicationNetwork =  var.subnet_cidrs.value.az2.security.application_region
-    #dmzInsideNetwork   =  var.subnet_cidrs.value.az2.security.dmz_inside
-    dmzOutsideNetwork  =  var.subnet_cidrs.value.az2.security.internal
-    #egressCh1Network   =  var.subnet_cidrs.value.az2.security.egress_to_ch1
-    #egressCh2Network   =  var.subnet_cidrs.value.az2.security.egress_to_ch2
-    #internalNetwork    =  var.subnet_cidrs.value.az2.security.internal
-    externalNetwork    =  var.subnet_cidrs.value.az2.security.dmz_inside
-    #mgmtNetwork        =  var.subnet_cidrs.value.az2.security.mgmt
-    #peeringNetwork     =  var.subnet_cidrs.value.az2.security.peering
+    applicationNetwork =  var.subnet_cidrs.az2.security.application_region
+    #dmzInsideNetwork   =  var.subnet_cidrs.az2.security.dmz_inside
+    dmzOutsideNetwork  =  var.subnet_cidrs.az2.security.internal
+    #egressCh1Network   =  var.subnet_cidrs.az2.security.egress_to_ch1
+    #egressCh2Network   =  var.subnet_cidrs.az2.security.egress_to_ch2
+    #internalNetwork    =  var.subnet_cidrs.az2.security.internal
+    externalNetwork    =  var.subnet_cidrs.az2.security.dmz_inside
+    #mgmtNetwork        =  var.subnet_cidrs.az2.security.mgmt
+    #peeringNetwork     =  var.subnet_cidrs.az2.security.peering
     # sync must be other az
-    syncNetwork        = var.subnet_cidrs.value.az1.security.application_region
+    syncNetwork        = var.subnet_cidrs.az1.security.application_region
   }
 }
 #
@@ -189,14 +189,14 @@ module internal_az1 {
 
   prefix = format(
     "%s-bigip_with_new_vpc_internal-%s",
-    var.project.value,
-    var.random_id.value
+    var.project,
+    var.random_id
   )
   ec2_instance_type           = var.ec2_instance_type
   ec2_key_name                = var.ec2_key_name
-  aws_secretmanager_secret_id = var.secrets_manager_name.value
+  aws_secretmanager_secret_id = var.secrets_manager_name
   bigip_map                   = local.internal_bigip_map_az1
-  iam_instance_profile        = var.iam_instance_profile_name.value
+  iam_instance_profile        = var.iam_instance_profile_name
   custom_user_data            = data.template_file.internal_onboard_az1.rendered
 }
 
@@ -205,13 +205,13 @@ module internal_az2 {
 
   prefix = format(
     "%s-bigip_with_new_vpc_internal-%s",
-    var.project.value,
-    var.random_id.value
+    var.project,
+    var.random_id
   )
   ec2_instance_type           = var.ec2_instance_type
   ec2_key_name                = var.ec2_key_name
-  aws_secretmanager_secret_id = var.secrets_manager_name.value
+  aws_secretmanager_secret_id = var.secrets_manager_name
   bigip_map                   = local.internal_bigip_map_az2
-  iam_instance_profile        = var.iam_instance_profile_name.value
+  iam_instance_profile        = var.iam_instance_profile_name
   custom_user_data            = data.template_file.internal_onboard_az2.rendered
 }
