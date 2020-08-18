@@ -34,3 +34,5 @@ variable transit_gateways {}
 variable aws_cidr_ips {}
 variable subnet_cidrs {}
 variable aws_profile {}
+variable f5_ami_search_name {}
+variable f5_owner_ids {}

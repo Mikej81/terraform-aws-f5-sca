@@ -30,6 +30,18 @@ variable "project" {
   default     = "mjcSCA"
 }
 
+variable "f5_ami_search_name" {
+  description = "BIG-IP AMI name to search for"
+  type        = string
+  default     = "F5 Networks BIGIP-14.* PAYG - Best 200Mbps*"
+}
+
+variable "f5_owner_ids" {
+  description = "F5 owner ID"
+  type        = list(string)
+  default     = ["679593333241", "345084742485", "self", "aws-marketplace"]
+}
+
 variable "atc_versions" {
   description = "F5 Automation Toolchain Version used in this project"
   type        = map(string)

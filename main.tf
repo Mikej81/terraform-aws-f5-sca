@@ -6,14 +6,14 @@ data http myip {
 }
 
 resource random_id so_random {
-  byte_length = 4
+  byte_length = 2
 }
 
 module core {
     source              = "./sca/core"
     aws_region          = var.aws_region
     aws_profile         = var.aws_profile
-    project             = var.project
+    project             = lower(var.project)
     region-az-1         = var.region-az-1
     region-az-2         = var.region-az-2
     allowed_mgmt_cidr   = "${chomp(data.http.myip.body)}/32"
@@ -29,7 +29,7 @@ module security_stack {
     ec2_instance_type           = var.ec2_instance_type
     aws_region                  = var.aws_region
     aws_profile                 = var.aws_profile
-    project                     = var.project
+    project                     = lower(var.project)
     transit_gateways            = module.core.transit_gateways
     random_id                   = lower(random_id.so_random.hex)
     security_groups             = module.core.security_groups
@@ -40,4 +40,6 @@ module security_stack {
     aws_cidr_ips                = module.core.aws_cidr_ips
     iam_instance_profile_name   = module.core.iam_instance_profile_name
     subnets                     = module.core.subnets
+    f5_ami_search_name          = var.f5_ami_search_name
+    f5_owner_ids                = var.f5_owner_ids
 }

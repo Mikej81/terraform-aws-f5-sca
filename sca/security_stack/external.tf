@@ -140,6 +140,8 @@ data "template_file" "external_onboard_az1" {
     peeringNetwork     =  var.subnet_cidrs.az1.security.peering
     # sync must be other az
     syncNetwork        = var.subnet_cidrs.az2.security.application_region
+    # gov ami
+    f5_ami_search_name = var.f5_ami_search_name
   }
 }
 data "template_file" "external_onboard_az2" {
@@ -186,7 +188,7 @@ data "template_file" "external_onboard_az2" {
 # Create BIG-IP
 #
 module external_az1 {
-  source = "github.com/f5devcentral/terraform-aws-bigip?ref=develop"
+  source = "github.com/Mikej81/terraform-aws-bigip?ref=develop"
 
   prefix = format(
     "%s-bigip_with_new_vpc_external-%s",
@@ -195,13 +197,15 @@ module external_az1 {
   )
   ec2_instance_type           = var.ec2_instance_type
   ec2_key_name                = var.ec2_key_name
+  f5_owner_ids                = var.f5_owner_ids
+  f5_ami_search_name          = var.f5_ami_search_name
   aws_secretmanager_secret_id = var.secrets_manager_name
   bigip_map                   = local.external_bigip_map_az1
   iam_instance_profile        = var.iam_instance_profile_name
   custom_user_data            = data.template_file.external_onboard_az1.rendered
 }
 module external_az2 {
-  source = "github.com/f5devcentral/terraform-aws-bigip?ref=develop"
+  source = "github.com/Mikej81/terraform-aws-bigip?ref=develop"
 
   prefix = format(
     "%s-bigip_with_new_vpc_external-%s",
@@ -210,6 +214,8 @@ module external_az2 {
   )
   ec2_instance_type           = var.ec2_instance_type
   ec2_key_name                = var.ec2_key_name
+    f5_owner_ids                = var.f5_owner_ids
+  f5_ami_search_name          = var.f5_ami_search_name
   aws_secretmanager_secret_id = var.secrets_manager_name
   bigip_map                   = local.external_bigip_map_az2
   iam_instance_profile        = var.iam_instance_profile_name
